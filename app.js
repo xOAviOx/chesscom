@@ -3,6 +3,7 @@ const socket = require("socket.io");
 const { Chess } = require("chess.js");
 const http = require("http");
 const path = require("path");
+const { title } = require("process");
 
 const app = express();
 
@@ -20,7 +21,11 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", { title: "Chess Com" });
+});
+
+io.on("connection", function (uniqueScoket) {
+  console.log("Conected");
 });
 
 server.listen(3000, function () {
