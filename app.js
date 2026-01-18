@@ -24,8 +24,12 @@ app.get("/", (req, res) => {
   res.render("index", { title: "Chess Com" });
 });
 
-io.on("connection", function (uniqueScoket) {
+io.on("connection", function (uniqueSocket) {
   console.log("Conected");
+
+  uniqueSocket.on("Apple", function () {
+    io.emit("Apple Pie");
+  });
 });
 
 server.listen(3000, function () {
