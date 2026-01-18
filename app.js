@@ -27,8 +27,22 @@ app.get("/", (req, res) => {
 io.on("connection", function (uniqueSocket) {
   console.log("Conected");
 
-  uniqueSocket.on("Apple", function () {
-    io.emit("Apple Pie");
+  if (!players.white) {
+    players.white = uniqueSocket.id;
+    uniqueSocket.emit("playerRole", "w");
+  } else if (!players.black) {
+    players.black = uniqueSocket.id;
+    uniqueSocket.emit("playerRole", "b");
+  } else {
+    uniqueSocket.emit("spectatorRole");
+  }
+
+  uniqueSocket.on("disconnect", function () {
+    if (uniqueSocket.id === players.white) {
+      delete players.white;
+    } else if (uniqueSocket.id === players.black) {
+      delete players.black;
+    }
   });
 });
 
